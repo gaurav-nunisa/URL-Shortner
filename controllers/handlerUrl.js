@@ -7,12 +7,20 @@ async function handleNewShorteningUrl(req, res) {
   // if(!body.url.startsWith("http")) return res.status(404).json("url not found")
 
   const shortID = nanoid(8);
+  const existingUrl = await URL.findOne({redirectURL : body.url})
+  if(existingUrl){
+    // return res.status(409).json({error : " URL already exists in the database "})
+    return res.render("Home", {
+      existingUrlFromBackend : existingUrl.shortUrl
+    })
+  }
+   
   await URL.create({
     redirectURL: body.url,
     shortUrl: shortID,
     visitHistory: [],
   });
-  return res.json({ id: shortID });
+  return res.render("home", { id: shortID });
 }
 
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>This is HOME</h1>
+    <h2>URL shortner</h2>
+    <%if(locals.id){%>
+    <p>URL GENERATED : http://localhost:8000/url<%= id %></p>
+    <%}%> <%if(locals.existingUrlFromBackend){%>
+    <p>Existing URL: http://localhost:8000/url<%= existingUrlFromBackend %></p>
+    <%}%>
+
+    <div>
+      <form method="POST" action="/url">
+        <label>Enter your original URL</label>
+        <input type="text" name="url" placeholder="https://www.example.com" />
+        <button type="submit">Generate Shorten URL</button>
+      </form>
+    </div>
+    <div>
+      <% if (locals.urlss) { %>
+      <!-- Check if `urlss` is not empty -->
+      <table>
+        <thead>
+          <tr>
+            <th>Serial Number</th>
+            <th>Original URL</th>
+            <th>Times Clicked</th>
+            <th>Short URL</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% urlss.forEach((url, index) => { %>
+          <!-- Loop through `urlss` -->
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= url.redirectURL %></td>
+            <td><%= url.visitHistory.length %></td>
+            <td><%= url.shortUrl %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <p>Table Data is Null</p>
+      <% } %>
+    </div>
+  </body>
+</html>
